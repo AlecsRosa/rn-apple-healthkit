@@ -21,6 +21,8 @@
 {
     NSDate *date = [RCTAppleHealthKit dateFromOptions:input key:@"date" withDefault:[NSDate date]];
 
+    NSLog(@"date %@", date);
+
     if(date == nil) {
         callback(@[RCTMakeError(@"could not parse date from options.date", nil, nil)]);
         return;
@@ -33,6 +35,8 @@
                                    unit:stepsUnit
                                     day:date
                              completion:^(double value, NSDate *startDate, NSDate *endDate, NSError *error) {
+                                     NSLog(@"value %@", value);
+
         if (!value) {
             callback(@[RCTJSErrorFromNSError(error)]);
             return;
@@ -43,6 +47,8 @@
                  @"startDate" : [RCTAppleHealthKit buildISO8601StringFromDate:startDate],
                  @"endDate" : [RCTAppleHealthKit buildISO8601StringFromDate:endDate],
          };
+
+                                     NSLog(@"response %@", response);
 
         callback(@[[NSNull null], response]);
     }];

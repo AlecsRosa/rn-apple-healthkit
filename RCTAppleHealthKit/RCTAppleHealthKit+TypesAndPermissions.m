@@ -63,6 +63,17 @@
     // Vital Signs Identifiers
     if ([@"HeartRate" isEqualToString: key]) {
         return [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
+        
+    }else if ([@"HeartRateVariability" isEqualToString: key]) {
+        if (@available(iOS 11.0, *)) {
+            return [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRateVariabilitySDNN];
+        } else {}
+   
+    }else if ([@"IrregularHeartRhythmEvent" isEqualToString: key]) {
+        if (@available(iOS 12.2, *)) {
+            return [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierIrregularHeartRhythmEvent];
+        } else {}
+            
     }else if ([@"BodyTemperature" isEqualToString: key]) {
         return [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyTemperature];
     }else if ([@"BloodPressureSystolic" isEqualToString: key]) {
@@ -80,7 +91,7 @@
     
     // Sleep
     if ([@"SleepAnalysis" isEqualToString: key]) {
-        return [HKObjectType quantityTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
+        return [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
     }
     
     // workouts
@@ -210,7 +221,11 @@
     
     // Mindfulness
     if([@"MindfulSession" isEqualToString:key]) {
-        return [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierMindfulSession];
+        if (@available(iOS 10.0, *)) {
+            return [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierMindfulSession];
+        } else {
+            // Fallback on earlier versions
+        }
     }
     return nil;
 }
