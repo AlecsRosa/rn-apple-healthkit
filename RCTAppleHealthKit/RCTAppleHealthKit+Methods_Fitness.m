@@ -21,8 +21,6 @@
 {
     NSDate *date = [RCTAppleHealthKit dateFromOptions:input key:@"date" withDefault:[NSDate date]];
 
-    NSLog(@"date %@", date);
-
     if(date == nil) {
         callback(@[RCTMakeError(@"could not parse date from options.date", nil, nil)]);
         return;
@@ -35,9 +33,8 @@
                                    unit:stepsUnit
                                     day:date
                              completion:^(double value, NSDate *startDate, NSDate *endDate, NSError *error) {
-                                     NSLog(@"value %@", value);
 
-        if (!value) {
+        if (error) {
             callback(@[RCTJSErrorFromNSError(error)]);
             return;
         }
@@ -47,8 +44,6 @@
                  @"startDate" : [RCTAppleHealthKit buildISO8601StringFromDate:startDate],
                  @"endDate" : [RCTAppleHealthKit buildISO8601StringFromDate:endDate],
          };
-
-                                     NSLog(@"response %@", response);
 
         callback(@[[NSNull null], response]);
     }];
@@ -108,7 +103,7 @@
     BOOL ascending = [RCTAppleHealthKit boolFromOptions:input key:@"ascending" withDefault:false];
     NSDate *startDate = [RCTAppleHealthKit dateFromOptions:input key:@"startDate" withDefault:nil];
     NSDate *endDate = [RCTAppleHealthKit dateFromOptions:input key:@"endDate" withDefault:[NSDate date]];
-    NSUInteger period = [RCTAppleHealthKit uintFromOptions:input key:@"period" withDefault:60]; 
+    NSUInteger period = [RCTAppleHealthKit uintFromOptions:input key:@"period" withDefault:60];
     BOOL includeManuallyAdded = [RCTAppleHealthKit boolFromOptions:input key:@"includeManuallyAdded" withDefault:false];
     
     if(startDate == nil){
