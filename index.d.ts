@@ -14,6 +14,8 @@ declare module "ar_react_native_healthkit" {
 
         getStepCount(options: any, callback: (err: string, results: HealthValue) => void): void;
         getStepSamples(options: any, callback: (err: string, results: Array<HealthValue>) => void): void;
+        getDistanceWalkingRunning(options: any, callback: (err: string, results: HealthValue) => void): void;
+        getAppleExerciseTime(options: any, callback: (err: string, results: HealthValue) => void): void;
 
         getSleepSamples(options: any, callback: (err: string, results: Array<HealthValue>) => void): void;
 

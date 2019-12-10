@@ -246,6 +246,44 @@
     }];
 }
 
+
+
+
+
+
+
+- (void)fitness_getAppleExerciseTime:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback
+{
+    HKUnit *unit = [RCTAppleHealthKit hkUnitFromOptions:input key:@"unit" withDefault:[HKUnit minuteUnit]];
+    NSDate *date = [RCTAppleHealthKit dateFromOptions:input key:@"date" withDefault:[NSDate date]];
+
+    if (@available(iOS 9.3, *)) {
+        HKQuantityType *quantityType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierAppleExerciseTime];
+        NSLog(@"%@", date);
+        [self fetchSumOfSamplesOnDayForType:quantityType unit:unit day:date completion:^(double value, NSDate *startDate, NSDate *endDate, NSError *error) {
+            if (!value) {
+                callback(@[RCTJSErrorFromNSError(error)]);
+                return;
+            }
+            
+            NSDictionary *response = @{
+                @"value" : @(value),
+                @"startDate" : [RCTAppleHealthKit buildISO8601StringFromDate:startDate],
+                @"endDate" : [RCTAppleHealthKit buildISO8601StringFromDate:endDate],
+            };
+            
+            
+            callback(@[[NSNull null], response]);
+        }];
+    } else {
+        // Fallback on earlier versions
+    }
+}
+
+
+
+
+
 - (void)fitness_getDailyDistanceWalkingRunningSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback
 {
     HKUnit *unit = [RCTAppleHealthKit hkUnitFromOptions:input key:@"unit" withDefault:[HKUnit meterUnit]];
